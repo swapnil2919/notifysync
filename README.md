@@ -317,4 +317,7 @@ The code is written to be simple and easy to understand.
 6.  Deploy the application.
 
 ------------------------------------------------------------------------
-🎉
+
+If you have questions, check the code comments.
+
+Happy Coding! 🎉
