@@ -1,9 +1,13 @@
-NotifySync - Flutter Notification App
+# NotifySync - Flutter Notification App
 
-A simple Flutter app that captures notifications and sends them to anAPI.
+A simple Flutter app that captures notifications and sends them to an
+API.
 
-📁 Project Structure
+------------------------------------------------------------------------
 
+## 📁 Project Structure
+
+``` text
 lib/
 ├── main.dart                      # App entry point
 ├── models/
@@ -17,30 +21,41 @@ lib/
     ├── listening_screen.dart      # Active listening and statistics
     ├── notifications_screen.dart  # Captured notifications list
     └── settings_screen.dart       # Settings and API configuration
+```
 
-🚀 Setup
+------------------------------------------------------------------------
 
-Step 1: Create a Flutter Project
+## 🚀 Setup
 
+### Step 1: Create a Flutter Project
+
+``` bash
 flutter create notifysync
 cd notifysync
+```
 
-Step 2: Copy the Files
+### Step 2: Copy the Files
 
-Replace the pubspec.yaml file.
+-   Replace the `pubspec.yaml` file.
+-   Copy all files into the `lib/` folder.
 
-Copy all files into the lib/ folder.
+### Step 3: Install Dependencies
 
-Step 3: Install Dependencies
-
+``` bash
 flutter pub get
+```
 
-Step 4: Run the App
+### Step 4: Run the App
 
+``` bash
 flutter run
+```
 
-📱 App Flow
+------------------------------------------------------------------------
 
+## 📱 App Flow
+
+``` text
 Home Screen (Get Started)
     ↓
 Permissions Screen (Choose notification types)
@@ -50,61 +65,62 @@ Listening Screen (Active listening + test buttons)
 Notifications Screen (Captured notifications)
     ↓
 Settings Screen (API configuration)
+```
 
-🔧 Main Features
+------------------------------------------------------------------------
 
-1. Notification Capture
+## 🔧 Main Features
 
-Listens for notifications.
+### 1. Notification Capture
 
-Sends captured notifications to the API.
+-   Listens for notifications.
+-   Sends captured notifications to the API.
+-   Stores notifications locally.
 
-Stores notifications locally.
-
-2. Dummy Testing
+### 2. Dummy Testing
 
 The Listening screen includes four test buttons:
 
-SMS -- Test SMS notification
+-   **SMS** -- Test SMS notification
+-   **Email** -- Test email notification
+-   **Order** -- Test order shipped notification
+-   **Payment** -- Test payment received notification
 
-Email -- Test email notification
+Click any button to simulate a notification. The app captures it and
+sends it to the API.
 
-Order -- Test order shipped notification
+### 3. Real-Time Sync
 
-Payment -- Test payment received notification
+-   Notifications are sent to the API immediately after being captured.
+-   Displays whether each notification is **Pending** or **Synced**.
 
-Click any button to simulate a notification. The app captures it andsends it to the API.
+### 4. Settings
 
-3. Real-Time Sync
+-   Set the server URL.
+-   Set the user ID.
+-   View API endpoints.
+-   Configure sync settings.
 
-Notifications are sent to the API immediately after being captured.
+------------------------------------------------------------------------
 
-Displays whether each notification is Pending or Synced.
+## 📡 API Integration
 
-4. Settings
+### Current Status: Dummy API
 
-Set the server URL.
+The app currently uses dummy data. When your backend is ready, update
+`lib/services/api_service.dart`.
 
-Set the user ID.
+### API Endpoints
 
-View API endpoints.
+#### 1. Send Notification
 
-Configure sync settings.
-
-📡 API Integration
-
-Current Status: Dummy API
-
-The app currently uses dummy data. When your backend is ready, updatelib/services/api_service.dart.
-
-API Endpoints
-
-1. Send Notification
-
+``` http
 POST http://localhost:8000/api/notifications
+```
 
 Request Body:
 
+``` json
 {
   "user_id": "user123",
   "title": "Order Shipped",
@@ -112,20 +128,26 @@ Request Body:
   "type": "order",
   "timestamp": "2026-08-06T10:30:00"
 }
+```
 
 Response:
 
+``` json
 {
   "status": "created",
   "id": 1
 }
+```
 
-2. Get Notifications
+#### 2. Get Notifications
 
+``` http
 GET http://localhost:8000/api/notifications?user_id=user123
+```
 
 Response:
 
+``` json
 [
   {
     "id": 1,
@@ -136,29 +158,29 @@ Response:
     "isSent": true
   }
 ]
+```
 
-🎯 Quick Testing
+------------------------------------------------------------------------
 
-Launch the app.
+## 🎯 Quick Testing
 
-Click Get Started.
+1.  Launch the app.
+2.  Click **Get Started**.
+3.  Select the required permissions and continue.
+4.  On the Listening screen, click a test button (SMS, Email, Order, or
+    Payment).
+5.  A notification will be captured.
+6.  Click **View Notifications**.
+7.  Check the captured notifications list.
+8.  Open **Settings** to review the API configuration.
 
-Select the required permissions and continue.
+------------------------------------------------------------------------
 
-On the Listening screen, click a test button (SMS, Email, Order, orPayment).
+## 🔌 Backend Integration
 
-A notification will be captured.
+### Step 1: Create a FastAPI Backend
 
-Click View Notifications.
-
-Check the captured notifications list.
-
-Open Settings to review the API configuration.
-
-🔌 Backend Integration
-
-Step 1: Create a FastAPI Backend
-
+``` python
 from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import datetime
@@ -179,20 +201,28 @@ async def create_notification(notif: NotificationCreate):
 @app.get("/api/notifications")
 async def get_notifications(user_id: str):
     return []
+```
 
-Step 2: Run the Backend
+### Step 2: Run the Backend
 
+``` bash
 pip install fastapi uvicorn
 uvicorn main:app --reload
+```
 
-Step 3: Update the Flutter App
+### Step 3: Update the Flutter App
 
-In lib/services/api_service.dart:
+In `lib/services/api_service.dart`:
 
+``` dart
 static const String baseUrl = 'http://YOUR_SERVER:8000/api';
+```
 
-📊 Data Model
+------------------------------------------------------------------------
 
+## 📊 Data Model
+
+``` dart
 NotificationModel {
   id: String,
   title: String,
@@ -201,97 +231,90 @@ NotificationModel {
   timestamp: DateTime,
   isSent: bool           // Whether it was sent to the API
 }
+```
 
-🐛 Debugging Tips
+------------------------------------------------------------------------
 
-Check the console logs while running:
+## 🐛 Debugging Tips
 
-📤 Sending notification...
+1.  Check the console logs while running:
 
-✅ Notification sent successfully
+    -   `📤 Sending notification...`
+    -   `✅ Notification sent successfully`
+    -   `❌ Failed: 404`
 
-❌ Failed: 404
+2.  Check the statistics on the Listening screen:
 
-Check the statistics on the Listening screen:
+    -   Captured count
+    -   Synced count
+    -   Queued count
 
-Captured count
+3.  Test the API:
 
-Synced count
+    -   Review the endpoints in the Settings screen.
+    -   Test them using Postman.
 
-Queued count
+------------------------------------------------------------------------
 
-Test the API:
+## ✅ Checklist
 
-Review the endpoints in the Settings screen.
+-   [ ] Flutter is installed (`flutter --version`)
+-   [ ] Dependencies are installed (`flutter pub get`)
+-   [ ] The app runs successfully (`flutter run`)
+-   [ ] Dummy testing works
+-   [ ] Notifications are captured correctly
+-   [ ] Backend is ready
+-   [ ] API URL is updated
+-   [ ] Real notifications are being sent
 
-Test them using Postman.
+------------------------------------------------------------------------
 
-✅ Checklist
+## 🎨 UI Components
 
-Flutter is installed (flutter --version)
+-   Dark theme with blue and teal gradient
+-   Simple and easy-to-use buttons
+-   Status badges for Pending and Synced notifications
+-   Icons for SMS, Email, Order, and Payment
+-   Statistics for Captured, Synced, and Queued notifications
 
-Dependencies are installed (flutter pub get)
+------------------------------------------------------------------------
 
-The app runs successfully (flutter run)
-
-Dummy testing works
-
-Notifications are captured correctly
-
-Backend is ready
-
-API URL is updated
-
-Real notifications are being sent
-
-🎨 UI Components
-
-Dark theme with blue and teal gradient
-
-Simple and easy-to-use buttons
-
-Status badges for Pending and Synced notifications
-
-Icons for SMS, Email, Order, and Payment
-
-Statistics for Captured, Synced, and Queued notifications
-
-📝 Code Quality
+## 📝 Code Quality
 
 The code is written to be simple and easy to understand.
 
-Clear comments
+-   Clear comments
+-   Simple logic
+-   Meaningful variable names
+-   One function for one task
 
-Simple logic
+------------------------------------------------------------------------
 
-Meaningful variable names
+## 🆘 Common Issues
 
-One function for one task
+### Issue: "No python application found"
 
-🆘 Common Issues
+**Solution:** Restart the app and check the backend logs.
 
-Issue: "No python application found"
+### Issue: Notifications are not sending
 
-Solution: Restart the app and check the backend logs.
+**Solution:** Check your internet connection and verify the API URL.
 
-Issue: Notifications are not sending
+### Issue: "Connection refused"
 
-Solution: Check your internet connection and verify the API URL.
+**Solution:** Make sure the backend server is running on
+`localhost:8000`.
 
-Issue: "Connection refused"
+------------------------------------------------------------------------
 
-Solution: Make sure the backend server is running onlocalhost:8000.
+## 🚀 Next Steps
 
-🚀 Next Steps
+1.  Build the backend using FastAPI.
+2.  Set up a database (PostgreSQL or MySQL).
+3.  Implement the API endpoints.
+4.  Update the server URL in the Flutter app.
+5.  Test with real notifications.
+6.  Deploy the application.
 
-Build the backend using FastAPI.
-
-Set up a database (PostgreSQL or MySQL).
-
-Implement the API endpoints.
-
-Update the server URL in the Flutter app.
-
-Test with real notifications.
-
-Deploy the application.
+------------------------------------------------------------------------
+🎉
